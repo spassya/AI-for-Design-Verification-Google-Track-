@@ -44,8 +44,21 @@ run_all.py                      # Single entry point
 
 ## Requirements
 
-* Python **3.10 or higher**
+* Python **3.10 or higher** (recommended: Python 3.11)
 * iVerilog installed and available in PATH
+
+### Install Python dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+If multiple Python versions are installed:
+
+```bash
+py -3.11 -m pip install -r requirements.txt
+```
+
 
 ---
 
