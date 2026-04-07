@@ -1,0 +1,65 @@
+AI for Design Verification – Phase 2 Results
+
+Execution Mode: Dry Run (no answers folder provided)
+
+Summary of Results:
+
+- counter:
+  Candidates reduced from 31 → 1
+
+- shift_left:
+  Candidates reduced from 31 → 2
+
+- shift_right:
+  Candidates reduced from 31 → 2
+
+
+Detailed Evaluation Output:
+
+Evaluating module: cdc_fifo_flops_push_credit
+Number of positive guesses: 31
+Precision: 0.03
+
+Evaluating module: counter
+Number of positive guesses: 1
+Precision: 0.00
+
+Evaluating module: credit_receiver
+Number of positive guesses: 31
+Precision: 0.03
+
+Evaluating module: ecc_sed_encoder
+Number of positive guesses: 31
+Precision: 0.03
+
+Evaluating module: enc_bin2gray
+Number of positive guesses: 31
+Precision: 0.03
+
+Evaluating module: enc_bin2onehot
+Number of positive guesses: 31
+Precision: 0.03
+
+Evaluating module: fifo_flops
+Number of positive guesses: 31
+Precision: 0.03
+
+Evaluating module: lfsr
+Number of positive guesses: 31
+Precision: 0.03
+
+Evaluating module: shift_left
+Number of positive guesses: 2
+Precision: 0.00
+
+Evaluating module: shift_right
+Number of positive guesses: 2
+Precision: 0.00
+
+
+Final Notes:
+
+- Results are based on dry-run evaluation.
+- No answers folder was available, so precision values are not final.
+- The agent successfully isolates the correct implementation for the counter module.
+- Shift modules are partially filtered and leave two candidate implementations.
