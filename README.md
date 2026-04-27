@@ -209,7 +209,7 @@ Passing mutants:
 
 The grader can reproduce results using:
 
-git clone <repo>  
+git clone <rep>  
 cd <repo>  
 python run_all.py visible_problems  
 
