@@ -159,7 +159,7 @@ Each testbench:
 ---
 
 ## Results (Visible Problems)
-
+```
 The agent reduces 31 candidates to exactly one correct implementation per module:
 
 cdc_fifo_flops_push_credit → mutant_19.v  
@@ -176,7 +176,7 @@ shift_right → mutant_9.v
 Each module should report:
 
 Number of positive guesses: 1
-
+```
 ---
 
 ## Outputs
