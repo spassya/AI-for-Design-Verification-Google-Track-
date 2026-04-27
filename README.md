@@ -209,11 +209,13 @@ Passing mutants:
 
 The grader can reproduce results using:
 
-git clone <rep>  
-cd <repo>  
-python run_all.py visible_problems  
+```
+git clone https://github.com/spassya/AI-for-Design-Verification-Google-Track-  
+cd AI-for-Design-Verification-Google-Track-  
+py -3.11 run_all.py visible_problems  
 
 No manual steps are required. The pipeline is fully automated.
+```
 
 ---
 
