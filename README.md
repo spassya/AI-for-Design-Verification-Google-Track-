@@ -48,25 +48,25 @@ example_outputs/                # Example logs/results
 * iVerilog installed and available in PATH  
 
 ### Install Python dependencies
-
+```
 pip install -r requirements.txt
-
+```
 If multiple Python versions are installed:
-
+```
 py -3.11 -m pip install -r requirements.txt
-
+```
 ---
 
 ## How to Run
 
 ### Option 1: Single Entry Point (Recommended)
-
+```
 python run_all.py visible_problems
-
+```
 Using Python 3.11 explicitly:
-
+```
 py -3.11 run_all.py visible_problems
-
+```
 This will:
 
 1. Generate testbenches  
@@ -81,21 +81,21 @@ Place the hidden testcase folder in the repository root:
 hidden_problems/
 
 Then run:
-
+```
 python run_all.py hidden_problems
-
+```
 ---
 
 ### Option 2: Manual Commands
 
 Generate testbenches:
-
+```
 python test_harness/generate_testbenches.py --problems_folder=./visible_problems
-
+```
 Run evaluation:
-
+```
 python test_harness/run_evaluation.py --problems_folder=./visible_problems
-
+```
 ---
 
 ## Approach
