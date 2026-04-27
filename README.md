@@ -18,7 +18,7 @@ and generates a testbench that:
 ---
 
 ## Project Structure
-
+```
 test_harness/
   ├── agent.py                  # AI agent implementation
   ├── generate_testbenches.py   # Generates testbenches
@@ -39,7 +39,7 @@ visible_problems/
 run_all.py                      # Single entry point
 example_outputs/                # Example logs/results
 .gitignore
-
+```
 ---
 
 ## Requirements
