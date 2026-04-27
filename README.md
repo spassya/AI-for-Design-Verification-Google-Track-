@@ -209,8 +209,8 @@ Passing mutants:
 
 The grader can reproduce results using:
 
-git clone <repo>  
-cd <repo>  
+git clone <repo>
+cd <repo>
 python run_all.py visible_problems  
 
 No manual steps are required. The pipeline is fully automated.
