@@ -1,64 +1,59 @@
-# AI for Design Verification – Phase 2
+# AI for Design Verification – Phase 3
 
 ## Overview
 
-This project implements an AI agent that automatically generates Verilog testbenches from natural language specifications to identify the correct RTL implementation among multiple candidates.
+This project implements an AI agent that automatically generates Verilog/SystemVerilog testbenches from natural language specifications to identify the correct RTL implementation among multiple candidates.
 
 The agent analyzes:
 
-* Natural language specifications
-* Multiple RTL implementations (mutants)
+* Natural language specifications  
+* Multiple RTL implementations (mutants)  
 
 and generates a testbench that:
 
-* Verifies correctness
-* Eliminates incorrect implementations
+* Verifies correctness  
+* Eliminates incorrect implementations  
+* Identifies exactly one correct RTL  
 
 ---
 
 ## Project Structure
 
-```
 test_harness/
   ├── agent.py                  # AI agent implementation
   ├── generate_testbenches.py   # Generates testbenches
   ├── run_evaluation.py         # Runs simulation & scoring
 
 visible_problems/
-  ├── cdc_fifo_flops_push_credit
-  ├── counter
-  ├── credit_receiver
-  ├── ecc_sed_encoder
-  ├── enc_bin2gray
-  ├── enc_bin2onehot
-  ├── fifo_flops
-  ├── lfsr
-  ├── shift_left
-  ├── shift_right
+  ├── cdc_fifo_flops_push_credit/
+  ├── counter/
+  ├── credit_receiver/
+  ├── ecc_sed_encoder/
+  ├── enc_bin2gray/
+  ├── enc_bin2onehot/
+  ├── fifo_flops/
+  ├── lfsr/
+  ├── shift_left/
+  ├── shift_right/
 
 run_all.py                      # Single entry point
+example_outputs/                # Example logs/results
 .gitignore
-```
 
 ---
 
 ## Requirements
 
-* Python **3.10 or higher** (recommended: Python 3.11)
-* iVerilog installed and available in PATH
+* Python **3.10 or higher** (recommended: Python 3.11)  
+* iVerilog installed and available in PATH  
 
 ### Install Python dependencies
 
-```bash
 pip install -r requirements.txt
-```
 
 If multiple Python versions are installed:
 
-```bash
 py -3.11 -m pip install -r requirements.txt
-```
-
 
 ---
 
@@ -66,18 +61,28 @@ py -3.11 -m pip install -r requirements.txt
 
 ### Option 1: Single Entry Point (Recommended)
 
-```bash
-python run_all.py
+python run_all.py visible_problems
 
-Using Python 3.11 explicitly (recommended if multiple Python versions exist):
+Using Python 3.11 explicitly:
 
-py -3.11 run_all.py
-```
+py -3.11 run_all.py visible_problems
 
 This will:
 
-1. Generate testbenches
-2. Run evaluation on visible problems
+1. Generate testbenches  
+2. Run evaluation on visible problems  
+
+---
+
+### Running Hidden Testcases
+
+Place the hidden testcase folder in the repository root:
+
+hidden_problems/
+
+Then run:
+
+python run_all.py hidden_problems
 
 ---
 
@@ -85,71 +90,137 @@ This will:
 
 Generate testbenches:
 
-```bash
-python test_harness/generate_testbenches.py \
-  --problems_folder=./visible_problems
-```
+python test_harness/generate_testbenches.py --problems_folder=./visible_problems
 
 Run evaluation:
 
-```bash
-python test_harness/run_evaluation.py \
-  --problems_folder=./visible_problems
-```
+python test_harness/run_evaluation.py --problems_folder=./visible_problems
 
 ---
 
 ## Approach
 
-The agent identifies module types using keyword matching on the specification and RTL:
+The agent identifies module types using keyword matching on the specification and RTL.
 
-* **Counter**
+* Counter  
+  - Handles reset, reinitialization, increment/decrement  
+  - Verifies wrap-around logic  
+  - Uses cycle-accurate validation  
 
-  * Handles reset, reinit, increment/decrement
-  * Wrap-around logic verification
-  * Cycle-accurate validation using clock
+* Shift Left  
+  - Symbol-based shifting (12-bit symbols)  
+  - Validates fill values  
+  - Tests boundary and invalid shift cases  
 
-* **Shift Left**
+* Shift Right  
+  - Logical right shifting  
+  - MSB fill behavior  
+  - Valid/invalid shift handling  
 
-  * Symbol-based shifting (12-bit symbols)
-  * Fill value validation
-  * Boundary and invalid shift testing
+* LFSR  
+  - Verifies feedback polynomial behavior  
+  - Checks sequence progression  
+  - Detects incorrect tap positions  
 
-* **Shift Right**
+* FIFO (fifo_flops)  
+  - Verifies FIFO ordering (push → pop)  
+  - Tests full and empty conditions  
+  - Validates pointer behavior  
 
-  * Logical right shifting (5-bit symbols)
-  * MSB fill behavior
-  * Valid/invalid shift handling
+* Credit Receiver  
+  - Verifies credit-based flow control  
+  - Checks credit increment/decrement  
+  - Validates push/pop credit interactions  
+
+* CDC FIFO (cdc_fifo_flops_push_credit)  
+  - Verifies cross-clock domain data transfer  
+  - Tests reset synchronization  
+  - Validates credit handling and ordering  
+
+* Binary to Gray Encoder (enc_bin2gray)  
+  - Verifies correct Gray code generation  
+  - Ensures single-bit transitions  
+
+* Binary to One-Hot Encoder (enc_bin2onehot)  
+  - Verifies only one output bit is high  
+  - Checks correct position mapping  
+
+* ECC Encoder (ecc_sed_encoder)  
+  - Verifies parity bit generation  
+  - Ensures correct error detection encoding  
 
 Each testbench:
 
-* Computes expected outputs internally
-* Compares against DUT outputs
-* Reports mismatches using `$display`
-* Prints `"TESTS PASSED"` on success
+* Computes expected outputs internally  
+* Compares against DUT outputs  
+* Reports mismatches using $display  
+* Prints "TESTS PASSED" on success  
 
 ---
 
 ## Results (Visible Problems)
 
-* **Counter**: Reduced candidates from 31 → 1 ✅
-* **Shift Left**: Reduced candidates from 31 → 2
-* **Shift Right**: Reduced candidates from 31 → 2
+The agent reduces 31 candidates to exactly one correct implementation per module:
+
+cdc_fifo_flops_push_credit → mutant_19.v  
+counter → mutant_11.v  
+credit_receiver → mutant_18.v  
+ecc_sed_encoder → mutant_18.v  
+enc_bin2gray → mutant_25.v  
+enc_bin2onehot → mutant_27.v  
+fifo_flops → mutant_23.v  
+lfsr → mutant_29.v  
+shift_left → mutant_1.v  
+shift_right → mutant_9.v  
+
+Each module should report:
+
+Number of positive guesses: 1
+
+---
+
+## Outputs
+
+The pipeline prints:
+
+* Module name  
+* Number of passing mutants  
+* Passing mutant filename  
+
+Example:
+
+Evaluating module: counter  
+Number of positive guesses: 1  
+Passing mutants:  
+  mutant_11.v  
 
 ---
 
 ## Notes
 
-* The evaluation shown is a **dry run** (no answers folder provided)
-* Final scoring during grading will use hidden testcases
-* The agent is designed to generalize to unseen modules
+* The evaluation shown is a dry run (no answers folder provided)  
+* Precision may appear as 0.00 — this is expected  
+* Final scoring during grading uses hidden testcases  
+* The agent is designed to generalize to unseen modules  
+
+---
+
+## Reproducibility
+
+The grader can reproduce results using:
+
+git clone <repo>  
+cd <repo>  
+python run_all.py visible_problems  
+
+No manual steps are required. The pipeline is fully automated.
 
 ---
 
 ## Submission Details
 
-* No hardcoded paths are used
-* Uses `sys.executable` for portability
-* Compatible with grading environment
-
-
+* Single command execution (run_all.py)  
+* Fully automated pipeline  
+* No hardcoded paths  
+* Uses sys.executable for portability  
+* Compatible with grading environment  
