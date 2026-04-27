@@ -1,0 +1,90 @@
+==================================================
+AI for Design Verification – Example Run Log
+==================================================
+
+=== Generating Testbenches ===
+Testbench generation completed successfully.
+
+=== Running Evaluation ===
+
+--------------------------------------------------
+Evaluating module: cdc_fifo_flops_push_credit
+Number of positive guesses: 1
+Passing mutants:
+  mutant_19.v
+--------------------------------------------------
+
+--------------------------------------------------
+Evaluating module: counter
+Number of positive guesses: 1
+Passing mutants:
+  mutant_11.v
+--------------------------------------------------
+
+--------------------------------------------------
+Evaluating module: credit_receiver
+Number of positive guesses: 1
+Passing mutants:
+  mutant_18.v
+--------------------------------------------------
+
+--------------------------------------------------
+Evaluating module: ecc_sed_encoder
+Number of positive guesses: 1
+Passing mutants:
+  mutant_18.v
+--------------------------------------------------
+
+--------------------------------------------------
+Evaluating module: enc_bin2gray
+Number of positive guesses: 1
+Passing mutants:
+  mutant_25.v
+--------------------------------------------------
+
+--------------------------------------------------
+Evaluating module: enc_bin2onehot
+Number of positive guesses: 1
+Passing mutants:
+  mutant_27.v
+--------------------------------------------------
+
+--------------------------------------------------
+Evaluating module: fifo_flops
+Number of positive guesses: 1
+Passing mutants:
+  mutant_23.v
+--------------------------------------------------
+
+--------------------------------------------------
+Evaluating module: lfsr
+Number of positive guesses: 1
+Passing mutants:
+  mutant_29.v
+--------------------------------------------------
+
+--------------------------------------------------
+Evaluating module: shift_left
+Number of positive guesses: 1
+Passing mutants:
+  mutant_1.v
+--------------------------------------------------
+
+--------------------------------------------------
+Evaluating module: shift_right
+Number of positive guesses: 1
+Passing mutants:
+  mutant_9.v
+--------------------------------------------------
+
+==================================================
+Summary
+==================================================
+
+Total modules evaluated: 10  
+Correct RTL identified per module: 1  
+Overall result: SUCCESS  
+
+==================================================
+=== DONE ===
+==================================================
