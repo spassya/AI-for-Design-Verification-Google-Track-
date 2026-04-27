@@ -75,8 +75,7 @@ module tb;
 
       #1;
       if (check_value_next_now && (value_next !== expected_next[3:0])) begin
-        $display("FAIL value_next mismatch: rst=%0d reinit=%0d incr_valid=%0d decr_valid=%0d expected=%0d got=%0d",
-                 t_rst, t_reinit, t_incr_valid, t_decr_valid, expected_next, value_next);
+        $display("FAIL value_next mismatch: expected=%0d got=%0d", expected_next, value_next);
         errors = errors + 1;
       end
 
@@ -85,8 +84,7 @@ module tb;
       expected_value = expected_next;
 
       if (value !== expected_value[3:0]) begin
-        $display("FAIL value mismatch after clock: rst=%0d reinit=%0d incr_valid=%0d decr_valid=%0d expected=%0d got=%0d",
-                 t_rst, t_reinit, t_incr_valid, t_decr_valid, expected_value, value);
+        $display("FAIL value mismatch after clock: expected=%0d got=%0d", expected_value, value);
         errors = errors + 1;
       end
     end
@@ -109,41 +107,33 @@ module tb;
     expected_value = 0;
     expected_next = 0;
 
-    // Bring DUT into a known state first.
     apply_and_check(1'b1, 1'b0, 1'b0, 1'b0, 4'd5, 2'd0, 2'd0, 1'b0);
     apply_and_check(1'b0, 1'b0, 1'b0, 1'b0, 4'd5, 2'd0, 2'd0, 1'b1);
 
-    // Reinit overrides incr/decr
     apply_and_check(1'b0, 1'b1, 1'b1, 1'b1, 4'd8, 2'd3, 2'd3, 1'b1);
-
-    // Hold
     apply_and_check(1'b0, 1'b0, 1'b0, 1'b0, 4'd0, 2'd0, 2'd0, 1'b1);
 
-    // Directed tests
     apply_and_check(1'b0, 1'b0, 1'b1, 1'b0, 4'd0, 2'd1, 2'd0, 1'b1);
     apply_and_check(1'b0, 1'b0, 1'b1, 1'b0, 4'd0, 2'd3, 2'd0, 1'b1);
     apply_and_check(1'b0, 1'b0, 1'b0, 1'b1, 4'd0, 2'd0, 2'd1, 1'b1);
     apply_and_check(1'b0, 1'b0, 1'b0, 1'b1, 4'd0, 2'd0, 2'd3, 1'b1);
 
-    // Both valid => net effect
     apply_and_check(1'b0, 1'b0, 1'b1, 1'b1, 4'd0, 2'd3, 2'd1, 1'b1);
     apply_and_check(1'b0, 1'b0, 1'b1, 1'b1, 4'd0, 2'd1, 2'd3, 1'b1);
     apply_and_check(1'b0, 1'b0, 1'b1, 1'b1, 4'd0, 2'd2, 2'd2, 1'b1);
 
-    // Wrap checks
     apply_and_check(1'b0, 1'b1, 1'b0, 1'b0, 4'd9, 2'd0, 2'd0, 1'b1);
-    apply_and_check(1'b0, 1'b0, 1'b1, 1'b0, 4'd0, 2'd3, 2'd0, 1'b1); // 9->1
+    apply_and_check(1'b0, 1'b0, 1'b1, 1'b0, 4'd0, 2'd3, 2'd0, 1'b1);
 
     apply_and_check(1'b0, 1'b1, 1'b0, 1'b0, 4'd1, 2'd0, 2'd0, 1'b1);
-    apply_and_check(1'b0, 1'b0, 1'b0, 1'b1, 4'd0, 2'd0, 2'd3, 1'b1); // 1->9
+    apply_and_check(1'b0, 1'b0, 1'b0, 1'b1, 4'd0, 2'd0, 2'd3, 1'b1);
 
     apply_and_check(1'b0, 1'b1, 1'b0, 1'b0, 4'd10, 2'd0, 2'd0, 1'b1);
-    apply_and_check(1'b0, 1'b0, 1'b1, 1'b0, 4'd0, 2'd1, 2'd0, 1'b1); // 10->0
+    apply_and_check(1'b0, 1'b0, 1'b1, 1'b0, 4'd0, 2'd1, 2'd0, 1'b1);
 
     apply_and_check(1'b0, 1'b1, 1'b0, 1'b0, 4'd0, 2'd0, 2'd0, 1'b1);
-    apply_and_check(1'b0, 1'b0, 1'b0, 1'b1, 4'd0, 2'd0, 2'd1, 1'b1); // 0->10
+    apply_and_check(1'b0, 1'b0, 1'b0, 1'b1, 4'd0, 2'd0, 2'd1, 1'b1);
 
-    // Sweep many cases
     for (initv = 0; initv <= 10; initv = initv + 1) begin
       apply_and_check(1'b0, 1'b1, 1'b0, 1'b0, initv[3:0], 2'd0, 2'd0, 1'b1);
 

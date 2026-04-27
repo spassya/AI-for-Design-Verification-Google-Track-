@@ -90,16 +90,8 @@ module tb;
       5'd5, 5'd4, 5'd3, 5'd2, 5'd1
     };
     fill = 5'd31;
-
-    apply_and_check(in, 3'd0, fill);
-    apply_and_check(in, 3'd1, fill);
-    apply_and_check(in, 3'd2, fill);
-    apply_and_check(in, 3'd3, fill);
-    apply_and_check(in, 3'd4, fill);
-
-    apply_and_check(in, 3'd5, fill);
-    apply_and_check(in, 3'd6, fill);
-    apply_and_check(in, 3'd7, fill);
+    for (sh = 0; sh <= 7; sh = sh + 1)
+      apply_and_check(in, sh[2:0], fill);
 
     in = {
       5'h1F, 5'h1E, 5'h1D, 5'h1C, 5'h1B,
@@ -117,11 +109,16 @@ module tb;
     for (sh = 0; sh <= 7; sh = sh + 1)
       apply_and_check(in, sh[2:0], fill);
 
-    if (errors == 0) begin
+    // Phase 3 targeted test
+    in = 50'b0;
+    in[22] = 1'b1;
+    fill = 5'b0;
+    apply_and_check(in, 3'd2, fill);
+
+    if (errors == 0)
       $display("TESTS PASSED");
-    end else begin
+    else
       $display("TEST FAILED WITH %0d ERRORS", errors);
-    end
 
     $finish;
   end
